@@ -1,13 +1,12 @@
-import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class BlockList extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  @column({serializeAs:"user_id"})
+  public userId: number
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  @column({serializeAs:"blocked_id"})
+  public blockedId: number
 }
