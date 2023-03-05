@@ -1,5 +1,8 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import BlockList from './BlockList'
+import Spot from './Spot'
+import Event from './Event'
 
 export default class User extends BaseModel {
   public static table= "users"
@@ -38,4 +41,14 @@ export default class User extends BaseModel {
 
   @column({serializeAs:"password"})
   public password: string
+
+  @hasMany (()=>BlockList)
+  public blocked: HasMany<typeof BlockList>
+
+  @hasMany (()=>Event)
+  public event: HasMany<typeof Event>
+
+  @hasMany (()=>Spot)
+  public spot: HasMany<typeof Spot>
+
 }

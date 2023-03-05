@@ -1,4 +1,5 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import Interaction from './Interaction'
 
 export default class Answer extends BaseModel {
   public static table= "answers"
@@ -7,4 +8,7 @@ export default class Answer extends BaseModel {
 
   @column({serializeAs:"text_description"})
   public textDescription: string
+
+  @hasMany (()=>Interaction)
+  public eventInteraction: HasMany<typeof Interaction>
 }

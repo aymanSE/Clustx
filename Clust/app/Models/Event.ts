@@ -1,5 +1,12 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, BelongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+import Category from './Category'
+import EventInteraction from './EventInteraction'
+import EventTag from './EventTag'
+import Image from './Image'
+import Report from './Report'
+import Spot from './Spot'
+import User from './User'
 
 export default class Event extends BaseModel {
   public static table= "events"
@@ -35,4 +42,27 @@ export default class Event extends BaseModel {
 
   @column({serializeAs:"thankingMessage"})
   public thankingMessage: string
+
+  @belongsTo(()=>Category) 
+  public category: BelongsTo<typeof Category>
+
+  @belongsTo(()=>User,{
+    foreignKey:"organizerId"
+  }) 
+  public organizer: BelongsTo<typeof User>
+
+  @hasMany (()=>EventInteraction)
+  public eventInteraction: HasMany<typeof EventInteraction>
+  
+  @hasMany (()=>EventTag)
+  public eventTag: HasMany<typeof EventTag>
+  
+  @hasMany (()=>Image)
+  public images: HasMany<typeof Image>
+  
+  @hasMany (()=>Report)
+  public report: HasMany<typeof Report>
+  
+  @hasMany (()=>Spot)
+  public spot: HasMany<typeof Spot>
 }

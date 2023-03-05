@@ -1,4 +1,5 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import Event from './Event'
 
 export default class Report extends BaseModel {
   public static table= "reports"
@@ -10,4 +11,7 @@ export default class Report extends BaseModel {
   
   @column({serializeAs:"event_id"})
   public eventId: number
+  
+  @belongsTo(()=>Event) 
+  public event: BelongsTo<typeof Event>
 }
