@@ -32,7 +32,7 @@ export default class Event extends BaseModel {
   public endDateTime: DateTime
 
   @column({serializeAs:"status"})
-  public status: DateTime
+  public status: string
 
   @column({serializeAs:"views"})
   public views: number
