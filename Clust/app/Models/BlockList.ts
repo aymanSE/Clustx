@@ -1,6 +1,7 @@
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class BlockList extends BaseModel {
+  public static table= "block_lists"
   @column({ isPrimary: true })
   public id: number
 
