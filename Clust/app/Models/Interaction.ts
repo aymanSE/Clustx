@@ -14,7 +14,4 @@ export default class Interaction extends BaseModel {
   
   @belongsTo (()=>Answer)
   public answer: BelongsTo<typeof Answer>
-
-  @hasMany (()=>EventInteraction)
-  public eventInteraction: HasMany<typeof EventInteraction>
 }
