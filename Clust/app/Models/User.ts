@@ -16,7 +16,7 @@ export default class User extends BaseModel {
   public birthDate: DateTime
   
   @column({serializeAs:"gender"})
-  public gender: DateTime
+  public gender: string
 
   @column({serializeAs:"about"})
   public about: string
@@ -28,7 +28,7 @@ export default class User extends BaseModel {
   public verified: boolean
 
   @column({serializeAs:"access_role"})
-  public accessRole: DateTime
+  public accessRole: string
 
   @column({serializeAs:"SID"})
   public SID: number
