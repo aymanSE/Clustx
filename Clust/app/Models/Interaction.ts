@@ -1,6 +1,5 @@
 import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Answer from './Answer'
-import EventInteraction from './EventInteraction'
 
 export default class Interaction extends BaseModel {
   public static table= "interactions"
