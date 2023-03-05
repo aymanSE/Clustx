@@ -1,11 +1,11 @@
-import { BaseModel, belongsTo, BelongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, BelongsTo, column, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 import Category from './Category'
-import EventInteraction from './EventInteraction'
-import EventTag from './EventTag'
 import Image from './Image'
+import Interaction from './Interaction'
 import Report from './Report'
 import Spot from './Spot'
+import Tag from './Tag'
 import User from './User'
 
 export default class Event extends BaseModel {
@@ -51,11 +51,11 @@ export default class Event extends BaseModel {
   }) 
   public organizer: BelongsTo<typeof User>
 
-  @hasMany (()=>EventInteraction)
-  public eventInteraction: HasMany<typeof EventInteraction>
+  @manyToMany (()=>Interaction)
+  public eventInteraction: ManyToMany<typeof Interaction>
   
-  @hasMany (()=>EventTag)
-  public eventTag: HasMany<typeof EventTag>
+  @manyToMany (()=>Tag)
+  public eventTag: ManyToMany<typeof Tag>
   
   @hasMany (()=>Image)
   public images: HasMany<typeof Image>
