@@ -1,3 +1,3 @@
-// import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+// // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class EventTagsController {}
+// export default class EventTagsController {}
