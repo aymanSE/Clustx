@@ -55,3 +55,11 @@ Route.group(()=>{
   Route.put('/', 'SpotsController.update')
   Route.delete('/:id', 'SpotsController.destroy')
 }).prefix('spot')
+
+Route.group(()=>{
+  Route.get('/', 'UsersController.get')
+  Route.get('/:id', 'UsersController.getById')
+  Route.post('/', 'UsersController.create')
+  Route.put('/', 'UsersController.update')
+  Route.delete('/:id', 'UsersController.destroy')
+}).prefix('user')
