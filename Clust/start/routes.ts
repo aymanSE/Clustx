@@ -60,9 +60,12 @@ Route.group(()=>{
   Route.get('/', 'UsersController.get')
   Route.get('/:id', 'UsersController.getById')
   Route.post('/', 'UsersController.create')
+  Route.post('/login', 'UsersController.login')
+  Route.post('/logout', 'UsersController.logout')
   Route.put('/', 'UsersController.update')
   Route.delete('/:id', 'UsersController.destroy')
 }).prefix('user')
+
 Route.group(()=>{
 Route.get('/', 'CategoriesController.get')
 Route.get('/:id', 'CategoriesController.getById')
