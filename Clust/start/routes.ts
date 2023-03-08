@@ -63,3 +63,19 @@ Route.group(()=>{
   Route.put('/', 'UsersController.update')
   Route.delete('/:id', 'UsersController.destroy')
 }).prefix('user')
+Route.group(()=>{
+Route.get('/', 'CategoriesController.get')
+Route.get('/:id', 'CategoriesController.getById')
+Route.post('/', 'CategoriesController.create')
+Route.put('/', 'CategoriesController.update')
+Route.delete('/:id', 'CategoriesController.destroy')
+}).prefix('category')
+
+
+Route.group(()=>{
+Route.get('/', 'TagsController.get')
+Route.get('/:id', 'TagsController.getById')
+Route.post('/', 'TagsController.create')
+Route.put('/', 'TagsController.update')
+Route.delete('/:id', 'TagsController.destroy')
+}).prefix('tag')
