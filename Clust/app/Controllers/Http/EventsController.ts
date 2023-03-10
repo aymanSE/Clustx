@@ -2,11 +2,13 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Event from 'App/Models/Event'
 
 import {schema,rules} from '@ioc:Adonis/Core/Validator'
+import Image from 'App/Models/Image'
+import Application from '@ioc:Adonis/Core/Application'
 
 export default class EventsController {
 
-    public async get(/*ctx: HttpContextContract*/){
-        var result = Event.all()
+    public async get({params}){
+        var result = await Event.query().preload("images",(imagesQuery)=>imagesQuery.where('event_id',params.id))
         return result
     }  
 
@@ -16,7 +18,29 @@ export default class EventsController {
         var result = Event.findOrFail(id)
         return result
     }
+//TODO
+    public async addImage(ctx: HttpContextContract){
+        const newSchema= schema.create({
 
+         path: schema.string(),
+         event_id: schema.number([
+            rules.exists({
+                table: 'events',
+                column:'id'
+            }),
+        ]),
+        is_memory:schema.boolean()
+        })
+        var fields= await ctx.request.validate({schema: newSchema})
+        var image= new Image()
+
+        image.path= fields.path
+        image.isMemory=fields.is_memory
+        image.eventId=fields.event_id    
+        var result= await image.save()
+        return result
+     }
+//
     public async create(ctx: HttpContextContract){
 
         const newSchema= schema.create({
@@ -96,8 +120,6 @@ export default class EventsController {
         })
         var fields= await ctx.request.validate({schema: newSchema})
         var event=  await Event.findOrFail(fields.id)
-
-            var event = new Event()
             event.name=  fields.name
             event.description= fields.description
             event.categoryId=  fields.category_id
@@ -127,5 +149,12 @@ export default class EventsController {
                 return { message: "Event not found ;(" }
             }
     }
-
+    public async uploadImage(ctx: HttpContextContract){
+        var image= ctx.request.file("image", {
+          extnames:["png", "jpg", "jpeg"]
+        })
+        if(!image) return{ message: "Invalid file" }
+        await image.move(Application.tmpPath("images"))
+        return{ message: "The image has been uploaded!" }
+      }
 }

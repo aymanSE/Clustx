@@ -1,14 +1,14 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {schema} from '@ioc:Adonis/Core/Validator'
 import Category from 'App/Models/Category'
+import Event from 'App/Models/Event'
 
 export default class CategoriesController {
 
-    public async get(){
-        var result = Category.all()
+    public async get({params}){
+        var result = await Category.query().preload("event",(eventQuery)=>eventQuery.where('category_id',params.id))
         return result
-    }
-
+    }  
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
         var result = Category.findOrFail(id)
