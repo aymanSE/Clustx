@@ -25,12 +25,13 @@ export default class Event extends BaseModel {
   @column({serializeAs:"organizer_id"})
   public organizerId: number
 
-  @column({serializeAs:"startDateTime"})
-  public startDateTime: DateTime
+  @column({serializeAs:"start_date"})
+  public start_date: string
 
-  @column({serializeAs:"endDateTime"})
-  public endDateTime: DateTime
+  @column({serializeAs:"end_date"})
+  public end_date: string
 
+  
   @column({serializeAs:"status"})
   public status: string
 
@@ -40,8 +41,8 @@ export default class Event extends BaseModel {
   @column({serializeAs:"capacity"})
   public capacity: number
 
-  @column({serializeAs:"thankingMessage"})
-  public thankingMessage: string
+  @column({serializeAs:"thanking_message"})
+  public thanking_message: string
 
   @belongsTo(()=>Category) 
   public category: BelongsTo<typeof Category>
