@@ -44,7 +44,7 @@ export default class UsersController {
         about: schema.string.nullable(),
         image: schema.string.nullable(),
         verified: schema.boolean(),
-        access_role: schema.enum(["admen", "attendee", "organizer"]),
+        access_role: schema.enum(["admin", "attendee", "organizer"]),
         SID: schema.number.nullable(),
         email: schema.string({}, [
             rules.email
@@ -85,7 +85,7 @@ export default class UsersController {
         about: schema.string(),
         image: schema.string(),
         verified: schema.boolean(),
-        access_role: schema.enum(["admen", "attendee", "organizer"]),
+        access_role: schema.enum(["admin", "attendee", "organizer"]),
         SID: schema.number(),
         email: schema.string(),
         password: schema.string(),

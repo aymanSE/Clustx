@@ -82,6 +82,7 @@ Route.post('/', 'TagsController.create')
 Route.put('/', 'TagsController.update')
 Route.delete('/:id', 'TagsController.destroy')
 }).prefix('tag')
+
 Route.group(()=>{
   Route.post('/upload',  "EventsController.uploadImage")
   Route.get('/', 'EventsController.get')
@@ -95,6 +96,8 @@ Route.group(()=>{
     Route.get('/', 'ImagesController.get')
     Route.get('/:id', 'ImagesController.getById')
     Route.post('/', 'ImagesController.create')
+    Route.post('/upload', 'ImagesController.uploadImage')
     Route.put('/', 'ImagesController.update')
     Route.delete('/:id', 'ImagesController.destroy')
+    
     }).prefix('image')

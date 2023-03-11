@@ -7,8 +7,8 @@ import Application from '@ioc:Adonis/Core/Application'
 
 export default class EventsController {
 
-    public async get({params}){
-        var result = await Event.query().preload("images",(imagesQuery)=>imagesQuery.where('event_id',params.id))
+    public async get(){
+        var result = await Event.query().preload("images")
         return result
     }  
 
