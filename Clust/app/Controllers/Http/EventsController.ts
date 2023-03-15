@@ -1,9 +1,11 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Event from 'App/Models/Event'
+import moment from 'moment';
 
 import {schema,rules} from '@ioc:Adonis/Core/Validator'
 import Image from 'App/Models/Image'
 import Application from '@ioc:Adonis/Core/Application'
+import { DateTime } from 'luxon'
 
 export default class EventsController {
 
@@ -11,8 +13,56 @@ export default class EventsController {
         var result = await Event.query().preload("images")
         return result
     }  
-
+ 
     
+    public async getLiveEvents () {
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+        console.log(currentDateTime)
+       
+        // var liveEvents = await Event.query().preload("images")
+        //  .where('start_date', '<=', now)
+        //  
+        // return liveEvents
+       
+        
+        var result = Event.query().where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime)
+        return result
+      }
+      
+      public async getPastEvents () {
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+        console.log(currentDateTime)
+       
+        // var liveEvents = await Event.query().preload("images")
+        //  .where('start_date', '<=', now)
+        //  
+        // return liveEvents
+        
+        
+        var result = Event.query().where('end_date', '<', currentDateTime)
+        return result
+      }
+
+      public async getPastEventss () {
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+        console.log(currentDateTime)
+       
+        // var liveEvents = await Event.query().preload("images")
+        //  .where('start_date', '<=', now)
+        //  
+        // return liveEvents
+        
+        
+        var result = Event.query().where('end_date', '<', currentDateTime)
+       
+      }
+
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
         var result = Event.findOrFail(id)
