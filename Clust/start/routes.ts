@@ -65,6 +65,7 @@ Route.group(()=>{
   Route.post('/', 'UsersController.create')
   Route.post('/login', 'UsersController.login')
   Route.post('/logout', 'UsersController.logout')
+  Route.post('/upload', 'ImagesController.uploadImage')
   Route.put('/', 'UsersController.update')
   Route.delete('/:id', 'UsersController.destroy')
 }).prefix('user')

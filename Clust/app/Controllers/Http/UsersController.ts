@@ -1,6 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import {schema, rules} from '@ioc:Adonis/Core/Validator'
+import Image from 'App/Models/Image'
+import Application from '@ioc:Adonis/Core/Application'
 
 export default class UsersController {
     
@@ -124,4 +126,27 @@ export default class UsersController {
                 return { message: "User not found :(" }
             }
     }
+    public async uploadImage(ctx: HttpContextContract){
+        var image= ctx.request.file("image", {
+          extnames:["png", "jpg", "jpeg"]
+        })        
+        if(!image) return{ message: "Invalid file" }
+        await image.move(Application.tmpPath("images"))
+        const newSchema= schema.create({
+            event_id: schema.number([
+               rules.exists({
+                   table: 'events',
+                   column:'id'
+               }),
+           ]),
+           is_memory:schema.boolean()
+           })
+           var fields= await ctx.request.validate({schema: newSchema})
+        var newImage = new Image()
+        newImage.eventId= fields.event_id
+        newImage.isMemory= fields.is_memory
+        newImage.path= image["data"]["clientName"]
+        await newImage.save()
+        return{ message: "The image has been uploaded!" }
+      }
 }
