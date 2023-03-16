@@ -1,7 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {schema, rules} from '@ioc:Adonis/Core/Validator'
 import Spot from 'App/Models/Spot'
+import moment from 'moment'
+import Event from 'App/Models/Event'
 
+// const EventController = use('App/Controllers/Http/EventController')
 export default class SpotsController {
     
     public async get(/*ctx: HttpContextContract*/){
@@ -9,6 +12,55 @@ export default class SpotsController {
         return result
     }
 
+
+    public async getPastSpots({}: HttpContextContract) {
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    
+        const pastEvents = await Event.query()
+          .where('end_date', '<', currentDateTime)
+          .select('id')
+    
+        const pastEventIds = pastEvents.map((event) => event.id)
+    
+        const spots = await Spot.query()
+          .whereIn('eventId', pastEventIds)
+          .preload('event')
+    
+        return spots
+      }
+      public async getUpcomingSpots({}: HttpContextContract) {
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    
+        const pastEvents = await Event.query()
+          .where('start_date', '>', currentDateTime)
+          .select('id')
+    
+        const pastEventIds = pastEvents.map((event) => event.id)
+    
+        const spots = await Spot.query()
+          .whereIn('eventId', pastEventIds)
+          .preload('event')
+    
+        return spots
+      }
+
+
+    // public async getUpcoming () {
+    //     const moment = require('moment')
+
+    //     const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    //     console.log(currentDateTime)
+       
+    //     // var liveEvents = await Event.query().preload("images")
+    //     //  .where('start_date', '<=', now)
+    //     //  
+    //     // return liveEvents
+    //     const pastEventIds = await EventController.getPastEventss()
+    //   .pluck('id')
+        
+    //     var result = Spot.query().where('eventId','=',).where('end_date', '>', currentDateTime)
+    //     return result
+    //   }
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
         var result = Spot.findOrFail(id)
@@ -84,3 +136,7 @@ export default class SpotsController {
             }
     }
 }
+// function use(arg0: string) {
+//     throw new Error('Function not implemented.')
+// }
+

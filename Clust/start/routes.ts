@@ -50,6 +50,9 @@ Route.group(()=>{
 
 Route.group(()=>{
   Route.get('/', 'SpotsController.get')
+  Route.get('getpast', 'SpotsController.getPastSpots')
+  Route.get('getupcoming', 'SpotsController.getUpcomingSpots')
+
   Route.get('/:id', 'SpotsController.getById')
   Route.post('/', 'SpotsController.create')
   Route.put('/', 'SpotsController.update')
@@ -85,9 +88,11 @@ Route.delete('/:id', 'TagsController.destroy')
 }).prefix('tag')
 
 Route.group(()=>{
-  Route.post('/upload',  "EventsController.uploadImage")
   Route.get('/', 'EventsController.get')
+  Route.get('getpast', 'EventsController.getPastEvents')
+  Route.get('getlive', 'EventsController.getLiveEvents')
   Route.get('/:id', 'EventsController.getById')
+  Route.post('/upload',  "EventsController.uploadImage")
   Route.post('/', 'EventsController.create')
   Route.put('/', 'EventsController.update')
   Route.delete('/:id', 'EventsController.destroy')
