@@ -3,6 +3,7 @@ import User from 'App/Models/User'
 import {schema, rules} from '@ioc:Adonis/Core/Validator'
 import Image from 'App/Models/Image'
 import Application from '@ioc:Adonis/Core/Application'
+import env from 'env'
 
 export default class UsersController {
     
@@ -148,5 +149,32 @@ export default class UsersController {
         newImage.path= image["data"]["clientName"]
         await newImage.save()
         return{ message: "The image has been uploaded!" }
+      }
+
+      public async sendEmail(){
+        const sgMail = require('@sendgrid/mail')
+        sgMail.setApiKey('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')
+
+        const msg = {
+        to: 'mayachamj.gd27@gmail.com', // Change to your recipient
+        from: 'info@walleterp.com', // Change to your verified sender
+        subject: 'Sending with SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+        }
+
+        sgMail
+        .send(msg)
+        .then((response) => {
+            console.log(response[0].statusCode)
+            console.log(response[0].headers)
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+            console.error(error.response.body);
+
+            console.log('not sent')
+        })
       }
 }
