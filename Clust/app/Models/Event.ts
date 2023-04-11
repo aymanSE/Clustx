@@ -66,4 +66,5 @@ export default class Event extends BaseModel {
   
   @hasMany (()=>Spot)
   public spot: HasMany<typeof Spot>
+    totalViews: number
 }
