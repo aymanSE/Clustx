@@ -14,6 +14,25 @@ export default class EventsController {
         return result
     }  
  
+    public async getEventViews(ctx: HttpContextContract) {
+        var id= ctx.params.id
+  
+        var result = await Event.query()
+        .select('views')
+        .where('id','=',id);
+        return result;
+      }
+      
+      public async getTotalViews(ctx: HttpContextContract) {
+        var id= ctx.params.id
+  
+        var result = await Event.query()
+        .select('views')
+        .where('events.organizer_id', '=', id).sum('views as totalviwes').groupBy('events.id');
+        return result;
+      }
+      
+    
     
     public async getLiveEvents () {
         const moment = require('moment')
@@ -30,22 +49,36 @@ export default class EventsController {
         var result = Event.query().where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime)
         return result
       }
+      public async getCount(ctx: HttpContextContract) {
+        var id= ctx.params.id
+
+        var result = await Event.query().select('*').where('organizer_id','=',id);
+        return result.length;
+      }
+
+
       
       public async getPastEvents () {
         const moment = require('moment')
 
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
         console.log(currentDateTime)
-       
-        // var liveEvents = await Event.query().preload("images")
-        //  .where('start_date', '<=', now)
-        //  
-        // return liveEvents
-        
+    
         
         var result = Event.query().where('end_date', '<', currentDateTime)
         return result
       }
+      public async getFutureEvents () {
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+        console.log(currentDateTime)
+    
+        
+        var result = Event.query().where('start_date', '>', currentDateTime)
+        return result
+      }
+      
 
       public async getPastEventss () {
         const moment = require('moment')

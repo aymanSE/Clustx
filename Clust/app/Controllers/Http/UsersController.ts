@@ -11,6 +11,7 @@ export default class UsersController {
         return result
     }
 
+
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
         var result = User.findOrFail(id)
@@ -109,6 +110,7 @@ export default class UsersController {
        return result
     }
 
+  
     public async destroy(ctx: HttpContextContract){
         var obj = await ctx.auth.authenticate()
         try{
@@ -149,4 +151,8 @@ export default class UsersController {
         await newImage.save()
         return{ message: "The image has been uploaded!" }
       }
+
+    
+      
+
 }

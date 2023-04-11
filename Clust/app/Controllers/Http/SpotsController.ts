@@ -12,7 +12,24 @@ export default class SpotsController {
         return result
     }
 
+    public async getEventAttendee(ctx: HttpContextContract) {
+      var id= ctx.params.id
 
+      var result = await Spot.query().select('*').where('event_id','=',id).andWhere('checked','=',1);
+      return result.length;
+    }
+    
+    public async getTotalAttendee(ctx: HttpContextContract) {
+      var id= ctx.params.id
+
+      var result = await Spot.query()
+      .join('events', 'spots.event_id', '=', 'events.id')
+      .select('*')
+      .where('events.organizer_id', '=', id)
+      .andWhere('checked','=',1);
+      return result.length;
+    }
+    
     public async getPastSpots({}: HttpContextContract) {
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
     

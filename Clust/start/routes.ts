@@ -52,6 +52,9 @@ Route.group(()=>{
   Route.get('/', 'SpotsController.get')
   Route.get('getpast', 'SpotsController.getPastSpots')
   Route.get('getupcoming', 'SpotsController.getUpcomingSpots')
+  
+  Route.get('totalattendance/:id', 'SpotsController.getTotalAttendee')
+  Route.get('totaleventattendee/:id', 'SpotsController.getEventAttendee')
 
   Route.get('/:id', 'SpotsController.getById')
   Route.post('/', 'SpotsController.create')
@@ -60,6 +63,7 @@ Route.group(()=>{
 }).prefix('spot')
 
 Route.group(()=>{
+
   Route.get('/', 'UsersController.get')
   Route.get('/:id', 'UsersController.getById')
   Route.post('/', 'UsersController.create')
@@ -90,9 +94,17 @@ Route.delete('/:id', 'TagsController.destroy')
 Route.group(()=>{
   Route.get('/', 'EventsController.get')
   Route.get('getpast', 'EventsController.getPastEvents')
+  Route.get('getfuture', 'EventsController.getFutureEvents')
+ 
+  Route.get('count/:id', 'EventsController.getCount')
+
   Route.get('getlive', 'EventsController.getLiveEvents')
   Route.get('/:id', 'EventsController.getById')
   Route.post('/upload',  "EventsController.uploadImage")
+ 
+  Route.get('totalviews/:id', 'EventsController.getTotalViews')
+  Route.get('totaleventviews/:id', 'EventsController.getEventViews')
+
   Route.post('/', 'EventsController.create')
   Route.put('/', 'EventsController.update')
   Route.delete('/:id', 'EventsController.destroy')
