@@ -3,7 +3,6 @@ import User from 'App/Models/User'
 import {schema, rules} from '@ioc:Adonis/Core/Validator'
 import Image from 'App/Models/Image'
 import Application from '@ioc:Adonis/Core/Application'
-import env from 'env'
 
 export default class UsersController {
     
@@ -25,13 +24,20 @@ export default class UsersController {
             ]),
             password: schema.string()
         })
-        const fields = ctx.request.validate({schema: newSchema})
-        var email= (await fields).email
-        var password= (await fields).password
+        const fields = await ctx.request.validate({schema: newSchema})
+        var email= fields.email
+        var password=  fields.password
         var result = await ctx.auth.attempt(email, password)
         return result
 
     }
+
+    public async otp(){
+        const otpGenerator = require('otp-generator');
+        const otp = otpGenerator.generate(5, { digits: true, alphabets: false, upperCase: false, specialChars: false });
+        return otp
+    }
+
     public async logout(ctx: HttpContextContract){
         var obj = await ctx.auth.authenticate()
         await ctx.auth.logout()
@@ -42,36 +48,33 @@ export default class UsersController {
        const newSchema= schema.create({
         first_name: schema.string(),
         Last_name: schema.string(),
-        birth_date: schema.date.nullable(),
-        gender: schema.enum.nullable(["female", "male"]),
-        about: schema.string.nullable(),
-        image: schema.string.nullable(),
+        birth_date: schema.string(),
+        gender: schema.enum(["female", "male"]),
+        about: schema.string(),
+        image: schema.string(),
         verified: schema.boolean(),
         access_role: schema.enum(["admin", "attendee", "organizer"]),
-        SID: schema.number.nullable(),
-        email: schema.string({}, [
-            rules.email
-        ]),
-        password: schema.string({},[
-            
-        ]),
+        SID: schema.number(),
+        email: schema.string(),
+        password: schema.string()
        })
        var fields= await ctx.request.validate({schema: newSchema})
        var user= new User()
        user.firstName= fields.first_name
        user.LastName= fields.Last_name
-       if(fields.birth_date)
+    //    if(fields.birth_date)
        user.birthDate= fields.birth_date
-       if(fields.gender)
+    //    if(fields.gender)
        user.gender= fields.gender
-       if(fields.about)
+    //    if(fields.about)
        user.about= fields.about
-       if(fields.image)
+    //    if(fields.image)
        user.image= fields.image
-       if(fields.access_role)
+    //    if(fields.access_role)
        user.accessRole= fields.access_role
-       if(fields.SID)
+    //    if(fields.SID)
        user.SID= fields.SID
+       user.verified= fields.verified
        user.email= fields.email
        user.password= fields.password
        var result= await user.save()
@@ -83,7 +86,7 @@ export default class UsersController {
        const newSchema= schema.create({
         first_name: schema.string(),
         Last_name: schema.string(),
-        birth_date: schema.date(),
+        birth_date: schema.string(),
         gender: schema.enum(["female", "male"]),
         about: schema.string(),
         image: schema.string(),
@@ -111,7 +114,7 @@ export default class UsersController {
     }
 
     public async destroy(ctx: HttpContextContract){
-        var obj = await ctx.auth.authenticate()
+        // var obj = await ctx.auth.authenticate()
         try{
             var id = ctx.params.id;
             var  user = await  User.findOrFail(id);

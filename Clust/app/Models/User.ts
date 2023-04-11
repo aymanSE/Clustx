@@ -1,8 +1,8 @@
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
-import { DateTime } from 'luxon'
+import { BaseModel, beforeSave, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import BlockList from './BlockList'
 import Spot from './Spot'
 import Event from './Event'
+import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class User extends BaseModel {
   public static table= "users"
@@ -16,7 +16,7 @@ export default class User extends BaseModel {
   public LastName: string
   
   @column({serializeAs:"birth_date"})
-  public birthDate: DateTime
+  public birthDate: string
   
   @column({serializeAs:"gender"})
   public gender: string
@@ -31,7 +31,8 @@ export default class User extends BaseModel {
   public verified: boolean
 
   @column({serializeAs:"access_role"})
-  public accessRole: string
+  public accessRole: string 
+  // ENUM('admin', 'attendee', 'organizer')
 
   @column({serializeAs:"SID"})
   public SID: number
@@ -51,4 +52,11 @@ export default class User extends BaseModel {
   @hasMany (()=>Spot)
   public spot: HasMany<typeof Spot>
 
+  @beforeSave()
+  public static async hashPassword (user: User) {
+    if (user.$dirty.password) {
+      user.password = await Hash.make(user.password)
+    }
+
+}
 }
