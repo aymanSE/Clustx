@@ -5,10 +5,14 @@ import Event from 'App/Models/Event'
 
 export default class CategoriesController {
 
-    public async get({params}){
-        var result = await Category.query().preload("event",(eventQuery)=>eventQuery.where('category_id',params.id))
+    public async get(){
+        var result = await Category.all()
         return result
     }  
+    public async getWithEvents({params}){
+        var result = await Category.query().preload("event",(eventQuery)=>eventQuery.where('category_id',params.id))
+        return result
+    } 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
         var result = Category.findOrFail(id)

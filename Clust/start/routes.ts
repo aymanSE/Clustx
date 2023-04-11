@@ -69,7 +69,8 @@ Route.group(()=>{
   Route.post('/', 'UsersController.create')
   Route.post('/login', 'UsersController.login')
   Route.post('/logout', 'UsersController.logout')
-  Route.post('/upload', 'ImagesController.uploadImage')
+  Route.post('/upload', 'UsersController.uploadImage')
+  Route.post('/email', 'UsersController.sendEmail')
   Route.put('/', 'UsersController.update')
   Route.delete('/:id', 'UsersController.destroy')
 }).prefix('user')
@@ -84,13 +85,20 @@ Route.delete('/:id', 'CategoriesController.destroy')
 
 
 Route.group(()=>{
-Route.get('/', 'TagsController.get')
-Route.get('/:id', 'TagsController.getById')
-Route.post('/', 'TagsController.create')
-Route.put('/', 'TagsController.update')
-Route.delete('/:id', 'TagsController.destroy')
-}).prefix('tag')
-
+Route.get('/', 'ReportsController.get')
+Route.get('/:id', 'ReportsController.getById')
+Route.post('/', 'ReportsController.create')
+Route.put('/', 'ReportsController.update')
+Route.delete('/:id', 'ReportsController.destroy')
+}).prefix('report')
+Route.group(()=>{
+  Route.get('/', 'TagsController.get')
+  Route.get('/:id', 'TagsController.getById')
+  Route.post('/', 'TagsController.create')
+  Route.put('/', 'TagsController.update')
+  Route.delete('/:id', 'TagsController.destroy')
+  }).prefix('tag')
+  
 Route.group(()=>{
   Route.get('/', 'EventsController.get')
   Route.get('getpast', 'EventsController.getPastEvents')
