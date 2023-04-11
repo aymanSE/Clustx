@@ -49,12 +49,12 @@ export default class UsersController {
         first_name: schema.string(),
         Last_name: schema.string(),
         birth_date: schema.string(),
-        gender: schema.enum(["female", "male"]),
-        about: schema.string(),
-        image: schema.string(),
-        verified: schema.boolean(),
+        gender: schema.enum(["female", "male", "other"]),
+        // about: schema.string(),
+        // image: schema.string(),
+        // verified: schema.boolean(),
         access_role: schema.enum(["admin", "attendee", "organizer"]),
-        SID: schema.number(),
+        // SID: schema.number(),
         email: schema.string(),
         password: schema.string()
        })
@@ -67,14 +67,14 @@ export default class UsersController {
     //    if(fields.gender)
        user.gender= fields.gender
     //    if(fields.about)
-       user.about= fields.about
+    //    user.about= fields.about
     //    if(fields.image)
-       user.image= fields.image
+    //    user.image= fields.image
     //    if(fields.access_role)
        user.accessRole= fields.access_role
     //    if(fields.SID)
-       user.SID= fields.SID
-       user.verified= fields.verified
+    //    user.SID= fields.SID
+    //    user.verified= fields.verified
        user.email= fields.email
        user.password= fields.password
        var result= await user.save()
@@ -87,7 +87,7 @@ export default class UsersController {
         first_name: schema.string(),
         Last_name: schema.string(),
         birth_date: schema.string(),
-        gender: schema.enum(["female", "male"]),
+        gender: schema.enum(["female", "male", "other"]),
         about: schema.string(),
         image: schema.string(),
         verified: schema.boolean(),
