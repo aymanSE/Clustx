@@ -51,31 +51,17 @@ export default class UsersController {
         Last_name: schema.string(),
         birth_date: schema.string(),
         gender: schema.enum(["female", "male", "other"]),
-        // about: schema.string(),
-        // image: schema.string(),
-        // verified: schema.boolean(),
         access_role: schema.enum(["admin", "attendee", "organizer"]),
-        // SID: schema.number(),
-        email: schema.string(),
+        email: schema.string([rules.email, rules.unique]),
         password: schema.string()
        })
        var fields= await ctx.request.validate({schema: newSchema})
        var user= new User()
        user.firstName= fields.first_name
        user.LastName= fields.Last_name
-    //    if(fields.birth_date)
        user.birthDate= fields.birth_date
-    //    if(fields.gender)
        user.gender= fields.gender
-    //    if(fields.about)
-    //    user.about= fields.about
-    //    if(fields.image)
-    //    user.image= fields.image
-    //    if(fields.access_role)
        user.accessRole= fields.access_role
-    //    if(fields.SID)
-    //    user.SID= fields.SID
-    //    user.verified= fields.verified
        user.email= fields.email
        user.password= fields.password
        var result= await user.save()
