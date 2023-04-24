@@ -52,7 +52,10 @@ export default class UsersController {
         birth_date: schema.string(),
         gender: schema.enum(["female", "male", "other"]),
         access_role: schema.enum(["admin", "attendee", "organizer"]),
-        email: schema.string([rules.email, rules.unique]),
+        email: schema.string([
+            rules.email(),
+            rules.unique({ table: 'users', column: 'email' } )
+        ]),
         password: schema.string()
        })
        var fields= await ctx.request.validate({schema: newSchema})
