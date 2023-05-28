@@ -12,8 +12,8 @@ export default class User extends BaseModel {
   @column({serializeAs:"first_name"})
   public firstName: string
 
-  @column({serializeAs:"Last_name"})
-  public LastName: string
+  @column({serializeAs:"last_name"})
+  public lastName: string
   
   @column({serializeAs:"birth_date"})
   public birthDate: string

@@ -42,18 +42,6 @@ Route.group(()=>{
   Route.delete('/:id', 'SpotsController.destroy')
 }).prefix('spot')
 
-Route.group(()=>{
-
-  Route.get('/', 'UsersController.get')
-  Route.get('/:id', 'UsersController.getById')
-  Route.post('/', 'UsersController.create')
-  Route.post('/login', 'UsersController.login')
-  Route.post('/logout', 'UsersController.logout')
-  Route.post('/upload', 'UsersController.uploadImage')
-  Route.post('/email', 'UsersController.sendEmail')
-  Route.put('/', 'UsersController.update')
-  Route.delete('/:id', 'UsersController.destroy')
-}).prefix('user')
 
 Route.group(()=>{
 Route.get('/', 'CategoriesController.get')
@@ -107,3 +95,16 @@ Route.group(()=>{
     Route.delete('/:id', 'ImagesController.destroy')
     
     }).prefix('image')
+
+Route.group(()=>{
+
+  Route.get('/', 'UsersController.get')
+  Route.get('/:id', 'UsersController.getById')
+  Route.post('/', 'UsersController.create')
+  Route.post('/login', 'UsersController.login')
+  Route.post('/logout', 'UsersController.logout')
+  Route.post('/upload', 'UsersController.uploadImage')
+  Route.post('/email', 'UsersController.sendEmail')
+  Route.put('/', 'UsersController.update')
+  Route.delete('/', 'UsersController.destroy')
+}).prefix('user')

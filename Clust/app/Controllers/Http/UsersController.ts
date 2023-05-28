@@ -6,11 +6,14 @@ import Application from '@ioc:Adonis/Core/Application'
 
 export default class UsersController {
     
-    public async get(/*ctx: HttpContextContract*/){
-        var result = User.all()
+    public async get(ctx: HttpContextContract){
+        const user = await ctx.auth.authenticate()
+        if(user){
+        return user
+    }
+        var result = await User.all()
         return result
     }
-
 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
@@ -48,7 +51,7 @@ export default class UsersController {
     public async create(ctx: HttpContextContract){
        const newSchema= schema.create({
         first_name: schema.string(),
-        Last_name: schema.string(),
+        last_name: schema.string(),
         birth_date: schema.string(),
         gender: schema.enum(["female", "male", "other"]),
         access_role: schema.enum(["admin", "attendee", "organizer"]),
@@ -61,7 +64,7 @@ export default class UsersController {
        var fields= await ctx.request.validate({schema: newSchema})
        var user= new User()
        user.firstName= fields.first_name
-       user.LastName= fields.Last_name
+       user.lastName= fields.last_name
        user.birthDate= fields.birth_date
        user.gender= fields.gender
        user.accessRole= fields.access_role
@@ -72,10 +75,10 @@ export default class UsersController {
     }
 
     public async update(ctx: HttpContextContract){
-        var obj = await ctx.auth.authenticate()
+        var user = await ctx.auth.authenticate()
        const newSchema= schema.create({
         first_name: schema.string(),
-        Last_name: schema.string(),
+        last_name: schema.string(),
         birth_date: schema.string(),
         gender: schema.enum(["female", "male", "other"]),
         about: schema.string(),
@@ -85,12 +88,10 @@ export default class UsersController {
         SID: schema.number(),
         email: schema.string(),
         password: schema.string(),
-        id: schema.number()
        })
        var fields= await ctx.request.validate({schema: newSchema})
-       var user=  await User.findOrFail(fields.id)
        user.firstName= fields.first_name
-       user.LastName= fields.Last_name
+       user.lastName= fields.last_name
        user.birthDate= fields.birth_date
        user.gender= fields.gender
        user.about= fields.about
@@ -105,9 +106,9 @@ export default class UsersController {
 
   
     public async destroy(ctx: HttpContextContract){
-        // var obj = await ctx.auth.authenticate()
+        var userAuth = await ctx.auth.authenticate()
         try{
-            var id = ctx.params.id;
+            var id = userAuth.id;
             var  user = await  User.findOrFail(id);
             try{
             await  user.delete();
