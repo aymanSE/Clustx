@@ -31,7 +31,9 @@ export default class ImagesController {
         ]),
         is_memory:schema.boolean()
         })
-        var fields= await ctx.request.validate({schema: newSchema})
+        var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
         var image= new Image()
 
         image.path= fields.path
@@ -53,7 +55,9 @@ export default class ImagesController {
         ]),
         is_memory:schema.boolean()
         })
-        var fields= await ctx.request.validate({schema: newSchema})
+        var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
         var image= await Image.findOrFail(fields.id)
 
         image.path= fields.path
@@ -84,7 +88,7 @@ export default class ImagesController {
           extnames:["png", "jpg", "jpeg"]
         })        
         if(!image) return{ message: "Invalid file" }
-        await image.move(Application.tmpPath("images"))
+        await image.move(Application.publicPath("images"))
         const newSchema= schema.create({
             event_id: schema.number([
                rules.exists({
@@ -94,13 +98,15 @@ export default class ImagesController {
            ]),
            is_memory:schema.boolean()
            })
-           var fields= await ctx.request.validate({schema: newSchema})
+           var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
         var newImage = new Image()
         newImage.eventId= fields.event_id
         newImage.isMemory= fields.is_memory
-        newImage.path= image["data"]["clientName"]
+        newImage.path= "/images/"+image.fileName 
         await newImage.save()
-        return{ message: "The image has been uploaded!" }
+        return newImage
       }
       
 }

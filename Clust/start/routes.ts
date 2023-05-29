@@ -88,9 +88,9 @@ Route.group(()=>{
 
   Route.group(()=>{
     Route.get('/', 'ImagesController.get')
+    Route.post('/upload', 'ImagesController.uploadImage')
     Route.get('/:id', 'ImagesController.getById')
     Route.post('/', 'ImagesController.create')
-    Route.post('/upload', 'ImagesController.uploadImage')
     Route.put('/', 'ImagesController.update')
     Route.delete('/:id', 'ImagesController.destroy')
     

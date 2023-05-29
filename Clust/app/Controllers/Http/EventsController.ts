@@ -153,7 +153,9 @@ export default class EventsController {
             thanking_message:schema.string()
 
         })
-        var fields= await ctx.request.validate({schema: newSchema})
+        var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
       
             var event = new Event()
             event.name=  fields.name
@@ -201,7 +203,9 @@ export default class EventsController {
             thanking_message:schema.string(),
             id: schema.number()
         })
-        var fields= await ctx.request.validate({schema: newSchema})
+        var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
         var event=  await Event.findOrFail(fields.id)
             event.name=  fields.name
             event.description= fields.description

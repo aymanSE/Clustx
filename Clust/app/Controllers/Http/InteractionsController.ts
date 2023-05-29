@@ -26,7 +26,9 @@ export default class InteractionsController {
             })
         ])
        })
-       var fields= await ctx.request.validate({schema: newSchema})
+       var fields= await ctx.request.validate({schema: newSchema, messages:{
+        "exists": "{{field}} (foreign key) is not existed"
+    } })
        var interaction= new Interaction()
        interaction.type= fields.type
        interaction.answerId= fields.answer_id
@@ -45,7 +47,9 @@ export default class InteractionsController {
         ]),
         id: schema.number()
        })
-       var fields= await ctx.request.validate({schema: newSchema})
+       var fields= await ctx.request.validate({schema: newSchema, messages:{
+        "exists": "{{field}} (foreign key) is not existed"
+    } })
        var interaction=  await Interaction.findOrFail(fields.id)
        interaction.type= fields.type
        interaction.answerId= fields.answer_id

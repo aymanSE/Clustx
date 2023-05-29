@@ -27,7 +27,9 @@ export default class ReportsController {
         ]),
        
        })
-       var fields= await ctx.request.validate({schema: newSchema})
+       var fields= await ctx.request.validate({schema: newSchema, messages:{
+        "exists": "{{field}} (foreign key) is not existed"
+    } })
        var report= new Report()
        report.description= fields.description
        report.eventId=fields.event_id
@@ -47,7 +49,9 @@ export default class ReportsController {
             id: schema.number()
 
            })
-           var fields= await ctx.request.validate({schema: newSchema})
+           var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
            var report= await Report.findOrFail(fields.id)
            report.description= fields.description
            report.eventId=fields.event_id

@@ -137,7 +137,9 @@ export default class UsersController {
            ]),
            is_memory:schema.boolean()
            })
-           var fields= await ctx.request.validate({schema: newSchema})
+           var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
         var newImage = new Image()
         newImage.eventId= fields.event_id
         newImage.isMemory= fields.is_memory

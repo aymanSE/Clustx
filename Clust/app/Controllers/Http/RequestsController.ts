@@ -27,7 +27,9 @@ export default class RequestsController {
         ]),
         sid:schema.number()
        })
-       var fields= await ctx.request.validate({schema: newSchema})
+       var fields= await ctx.request.validate({schema: newSchema, messages:{
+        "exists": "{{field}} (foreign key) is not existed"
+    } })
        var request= new Request()
        request.sid= fields.sid
        request.status=fields.status
@@ -49,7 +51,9 @@ export default class RequestsController {
             id: schema.number()
 
            })
-           var fields= await ctx.request.validate({schema: newSchema})
+           var fields= await ctx.request.validate({schema: newSchema, messages:{
+            "exists": "{{field}} (foreign key) is not existed"
+        } })
            //        var event=  await Event.findOrFail(fields.id)
 
            var request= await Request.findOrFail(fields.id)

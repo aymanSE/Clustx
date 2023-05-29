@@ -101,7 +101,9 @@ export default class SpotsController {
             })
         ])
        })
-       var fields= await ctx.request.validate({schema: newSchema})
+       var fields= await ctx.request.validate({schema: newSchema, messages:{
+        "exists": "{{field}} (foreign key) is not existed"
+    } })
        var spot= new Spot()
        spot.checked= fields.checked
        spot.eventId= fields.event_id
@@ -127,7 +129,9 @@ export default class SpotsController {
         ]),
         id: schema.number()
        })
-       var fields= await ctx.request.validate({schema: newSchema})
+       var fields= await ctx.request.validate({schema: newSchema, messages:{
+        "exists": "{{field}} (foreign key) is not existed"
+    } })
        var spot=  await Spot.findOrFail(fields.id)
        spot.checked= fields.checked
        spot.eventId= fields.event_id
