@@ -104,7 +104,7 @@ export default class ImagesController {
         var newImage = new Image()
         newImage.eventId= fields.event_id
         newImage.isMemory= fields.is_memory
-        newImage.path= "/images/"+image.fileName 
+        newImage.path= "images/"+image.fileName 
         await newImage.save()
         return newImage
       }
