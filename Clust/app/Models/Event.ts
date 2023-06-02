@@ -7,6 +7,8 @@ import Report from './Report'
 import Spot from './Spot'
 import Tag from './Tag'
 import User from './User'
+import Country from './Country'
+import { Address } from 'proxy-addr'
 
 export default class Event extends BaseModel {
   public static table= "events"
@@ -21,7 +23,8 @@ export default class Event extends BaseModel {
 
   @column({serializeAs:"category_id"})
   public categoryId: number
-
+  @column({serializeAs:"country_id"})
+  public countryId: number
   @column({serializeAs:"organizer_id"})
   public organizerId: number
 
@@ -31,7 +34,8 @@ export default class Event extends BaseModel {
   @column({serializeAs:"end_date"})
   public end_date: string
 
-  
+  @column({serializeAs:"address"})
+  public address: string
   @column({serializeAs:"status"})
   public status: string
 
@@ -43,7 +47,8 @@ export default class Event extends BaseModel {
 
   @column({serializeAs:"thanking_message"})
   public thanking_message: string
-
+  @belongsTo(()=>Country) 
+  public country: BelongsTo<typeof Country>
   @belongsTo(()=>Category) 
   public category: BelongsTo<typeof Category>
 

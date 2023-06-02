@@ -30,5 +30,5 @@ export default Env.rules({
   MYSQL_PASSWORD: Env.schema.string.optional(),
   MYSQL_DB_NAME: Env.schema.string(),
 
-  SENDGRID_API_KEY: Env.schema.string()
+  // SENDGRID_API_KEY: Env.schema.string()
 })
