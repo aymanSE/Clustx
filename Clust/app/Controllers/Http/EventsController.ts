@@ -136,7 +136,13 @@ export default class EventsController {
                 }),
 
             ]),
+            country_id: schema.number([
+                rules.exists({
+                    table: 'countries',
+                    column:'id'
+                }),
 
+            ]),
             organizer_id: schema.number([
                 rules.exists({
                     table: 'users',
@@ -150,8 +156,8 @@ export default class EventsController {
             status:schema.enum(["available","unavailable"]),
             views:schema.number(),
             capacity: schema.number(),
-            thanking_message:schema.string()
-
+            thanking_message:schema.string(),
+            address:schema.string()
         })
         var fields= await ctx.request.validate({schema: newSchema, messages:{
             "exists": "{{field}} (foreign key) is not existed"
@@ -159,8 +165,11 @@ export default class EventsController {
       
             var event = new Event()
             event.name=  fields.name
+
             event.description= fields.description
             event.categoryId=  fields.category_id
+            event.countryId=  fields.country_id
+
             event.organizerId= fields.organizer_id
             event.start_date= fields.start_date.toString()
             event.end_date=    fields.end_date.toString()
@@ -168,6 +177,7 @@ export default class EventsController {
             event.views=   fields.views
             event.capacity=  fields.capacity
             event.thanking_message= fields.thanking_message
+            event.address= fields.address
 
             var result= await event.save()
             return result
@@ -186,7 +196,13 @@ export default class EventsController {
                 }),
 
             ]),
+         country_id: schema.number([
+                rules.exists({
+                    table: 'countries',
+                    column:'id'
+                }),
 
+            ]),
             organizer_id: schema.number([
                 rules.exists({
                     table: 'users',
@@ -201,7 +217,9 @@ export default class EventsController {
             views:schema.number(),
             capacity: schema.number(),
             thanking_message:schema.string(),
-            id: schema.number()
+            id: schema.number(),
+            address:schema.string()
+
         })
         var fields= await ctx.request.validate({schema: newSchema, messages:{
             "exists": "{{field}} (foreign key) is not existed"
@@ -210,6 +228,7 @@ export default class EventsController {
             event.name=  fields.name
             event.description= fields.description
             event.categoryId=  fields.category_id
+            event.countryId=  fields.country_id
             event.organizerId= fields.organizer_id
             event.start_date= fields.start_date.toString()
             event.end_date=    fields.end_date.toString()
@@ -217,6 +236,8 @@ export default class EventsController {
             event.views=   fields.views
             event.capacity=  fields.capacity
             event.thanking_message= fields.thanking_message
+            event.address= fields.address
+
             var result= await event.save()
             return result
     }

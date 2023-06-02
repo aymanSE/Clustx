@@ -66,7 +66,14 @@ Route.group(()=>{
   Route.put('/', 'TagsController.update')
   Route.delete('/:id', 'TagsController.destroy')
   }).prefix('tag')
-  
+  Route.group(()=>{
+    Route.get('/', 'CountriesController.get')
+    Route.get('/:id', 'CountriesController.getById')
+    Route.post('/', 'CountriesController.create')
+    Route.put('/', 'CountriesController.update')
+    Route.delete('/:id', 'CountriesController.destroy')
+    }).prefix('country')
+    
 Route.group(()=>{
   Route.get('/', 'EventsController.get')
   Route.get('getpast', 'EventsController.getPastEvents')
