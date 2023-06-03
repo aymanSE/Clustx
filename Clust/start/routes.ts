@@ -78,6 +78,7 @@ Route.group(()=>{
   Route.get('/', 'EventsController.get')
   Route.get('getpast', 'EventsController.getPastEvents')
   Route.get('getfuture', 'EventsController.getFutureEvents')
+  Route.get('/hot', 'EventsController.getHot')
  
   Route.get('count/:id', 'EventsController.getCount')
 

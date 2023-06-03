@@ -10,7 +10,12 @@ import { DateTime } from 'luxon'
 export default class EventsController {
 
     public async get(){
-        var result = await Event.query().preload("images")
+        var result = await Event.query().preload("images").preload('organizer').preload("spot")
+        return result
+    }  
+
+    public async getHot(){
+        var result = await Event.query().orderBy("views", "desc").limit(2).preload("images").preload('organizer').preload("spot")
         return result
     }  
  
@@ -46,7 +51,7 @@ export default class EventsController {
         // return liveEvents
        
         
-        var result = Event.query().where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime)
+        var result = Event.query().where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime).preload("images").preload('organizer').preload("spot")
         return result
       }
       public async getCount(ctx: HttpContextContract) {
@@ -65,7 +70,7 @@ export default class EventsController {
         console.log(currentDateTime)
     
         
-        var result = Event.query().where('end_date', '<', currentDateTime)
+        var result = Event.query().where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot")
         return result
       }
       public async getFutureEvents () {
@@ -92,13 +97,13 @@ export default class EventsController {
         // return liveEvents
         
         
-        var result = Event.query().where('end_date', '<', currentDateTime)
+        var result = Event.query().where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot")
        
       }
 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result = Event.findOrFail(id)
+        var result = Event.query().where("id", id).preload("images").preload('organizer').preload("spot")
         return result
     }
 //TODO
@@ -136,13 +141,13 @@ export default class EventsController {
                 }),
 
             ]),
-            country_id: schema.number([
-                rules.exists({
-                    table: 'countries',
-                    column:'id'
-                }),
+            // country_id: schema.number([
+            //     rules.exists({
+            //         table: 'countries',
+            //         column:'id'
+            //     }),
 
-            ]),
+            // ]),
             organizer_id: schema.number([
                 rules.exists({
                     table: 'users',
@@ -157,7 +162,7 @@ export default class EventsController {
             views:schema.number(),
             capacity: schema.number(),
             thanking_message:schema.string(),
-            address:schema.string()
+            // address:schema.string()
         })
         var fields= await ctx.request.validate({schema: newSchema, messages:{
             "exists": "{{field}} (foreign key) is not existed"
@@ -168,7 +173,7 @@ export default class EventsController {
 
             event.description= fields.description
             event.categoryId=  fields.category_id
-            event.countryId=  fields.country_id
+            // event.countryId=  fields.country_id
 
             event.organizerId= fields.organizer_id
             event.start_date= fields.start_date.toString()
@@ -177,7 +182,7 @@ export default class EventsController {
             event.views=   fields.views
             event.capacity=  fields.capacity
             event.thanking_message= fields.thanking_message
-            event.address= fields.address
+            // event.address= fields.address
 
             var result= await event.save()
             return result
@@ -196,13 +201,13 @@ export default class EventsController {
                 }),
 
             ]),
-         country_id: schema.number([
-                rules.exists({
-                    table: 'countries',
-                    column:'id'
-                }),
+        //  country_id: schema.number([
+        //         rules.exists({
+        //             table: 'countries',
+        //             column:'id'
+        //         }),
 
-            ]),
+        //     ]),
             organizer_id: schema.number([
                 rules.exists({
                     table: 'users',
@@ -218,7 +223,7 @@ export default class EventsController {
             capacity: schema.number(),
             thanking_message:schema.string(),
             id: schema.number(),
-            address:schema.string()
+            // address:schema.string()
 
         })
         var fields= await ctx.request.validate({schema: newSchema, messages:{
@@ -228,7 +233,7 @@ export default class EventsController {
             event.name=  fields.name
             event.description= fields.description
             event.categoryId=  fields.category_id
-            event.countryId=  fields.country_id
+            // event.countryId=  fields.country_id
             event.organizerId= fields.organizer_id
             event.start_date= fields.start_date.toString()
             event.end_date=    fields.end_date.toString()
@@ -236,7 +241,7 @@ export default class EventsController {
             event.views=   fields.views
             event.capacity=  fields.capacity
             event.thanking_message= fields.thanking_message
-            event.address= fields.address
+            // event.address= fields.address
 
             var result= await event.save()
             return result
