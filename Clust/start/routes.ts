@@ -31,6 +31,7 @@ Route.group(()=>{
 Route.group(()=>{
   Route.get('/', 'SpotsController.get')
   Route.get('getpast', 'SpotsController.getPastSpots')
+  Route.get('getpast/auth', 'SpotsController.getPastSpotsByAuth')
   Route.get('getupcoming', 'SpotsController.getUpcomingSpots')
   
   Route.get('totalattendance/:id', 'SpotsController.getTotalAttendee')
@@ -76,6 +77,7 @@ Route.group(()=>{
     
 Route.group(()=>{
   Route.get('/', 'EventsController.get')
+  Route.get('/nonpast', 'EventsController.getWithNoPastEvents')
   Route.get('getpast', 'EventsController.getPastEvents')
   Route.get('getfuture', 'EventsController.getFutureEvents')
   Route.get('/hot', 'EventsController.getHot')

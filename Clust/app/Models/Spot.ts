@@ -20,5 +20,5 @@ export default class Spot extends BaseModel {
   public event: BelongsTo<typeof Event>
 
   @belongsTo(()=>User)
-  public interaction: BelongsTo<typeof User>
+  public user: BelongsTo<typeof User>
 }

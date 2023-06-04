@@ -7,15 +7,24 @@ import Event from 'App/Models/Event'
 // const EventController = use('App/Controllers/Http/EventController')
 export default class SpotsController {
     
-    public async get(/*ctx: HttpContextContract*/){
-        var result = Spot.all()
+    public async get(ctx: HttpContextContract){
+      var user = await ctx.auth.authenticate()
+      const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    
+      const pastEvents = await Event.query()
+        .where('end_date', '>=', currentDateTime)
+        .select('id')
+  
+       const pastEventIds = pastEvents.map((event) => event.id)
+
+        var result = Spot.query().where("user_id",user.id).whereIn('eventId', pastEventIds).preload("event")
         return result
     }
 
     public async getEventAttendee(ctx: HttpContextContract) {
       var id= ctx.params.id
 
-      var result = await Spot.query().select('*').where('event_id','=',id).andWhere('checked','=',1);
+      var result = await Spot.query().select('*').where('event_id','=',id).andWhere('checked','=',1).preload("event");
       return result.length;
     }
     
@@ -45,6 +54,26 @@ export default class SpotsController {
     
         return spots
       }
+      
+    
+    public async getPastSpotsByAuth(ctx:HttpContextContract) {
+      var user = await ctx.auth.authenticate()
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    
+        const pastEvents = await Event.query()
+          .where('end_date', '<', currentDateTime)
+          .select('id')
+    
+        const pastEventIds = pastEvents.map((event) => event.id)
+    
+        const spots = await Spot.query()
+          .whereIn('eventId', pastEventIds).where("user_id",user.id)
+          .preload('event')
+    
+        return spots
+      }
+
       public async getUpcomingSpots({}: HttpContextContract) {
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
     

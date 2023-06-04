@@ -10,7 +10,18 @@ import { DateTime } from 'luxon'
 export default class EventsController {
 
     public async get(){
+        
         var result = await Event.query().preload("images").preload('organizer').preload("spot")
+        return result
+    }  
+
+    public async getWithNoPastEvents(){
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+        console.log(currentDateTime)
+        
+        var result = await Event.query().where('end_date', '>=', currentDateTime).preload("images").preload('organizer').preload("spot")
         return result
     }  
 
@@ -73,6 +84,20 @@ export default class EventsController {
         var result = Event.query().where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot")
         return result
       }
+      
+    //   public async getPastEventsByAuth (ctx: HttpContextContract) {
+    //     var user = await ctx.auth.authenticate()
+
+    //     const moment = require('moment')
+
+    //     const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    //     console.log(currentDateTime)
+    
+        
+    //     var result = Event.query().where("user_id",user.id).where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot")
+    //     return result
+    //   }
+
       public async getFutureEvents () {
         const moment = require('moment')
 
