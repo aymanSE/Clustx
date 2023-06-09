@@ -32,7 +32,7 @@ export default class User extends BaseModel {
 
   @column({serializeAs:"access_role"})
   public accessRole: string 
-  // ENUM('admin', 'attendee', 'organizer')
+  // ENUM('admin', 'pending', 'attendee', 'organizer')
 
   @column({serializeAs:"SID"})
   public SID: number

@@ -14,6 +14,12 @@ export default class EventsController {
         var result = await Event.query().preload("images").preload('organizer').preload("spot")
         return result
     }  
+    //!!!!!!!
+    public async getByAuth(ctx: HttpContextContract){
+        const user = await ctx.auth.authenticate()
+        var result = await Event.query().where("id", user.id).preload("images").preload('organizer').preload("spot")
+        return result
+    }  
 
     public async getWithNoPastEvents(){
         const moment = require('moment')

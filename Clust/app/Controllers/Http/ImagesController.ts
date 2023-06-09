@@ -89,24 +89,25 @@ export default class ImagesController {
         })        
         if(!image) return{ message: "Invalid file" }
         await image.move(Application.publicPath("images"))
-        const newSchema= schema.create({
-            event_id: schema.number([
-               rules.exists({
-                   table: 'events',
-                   column:'id'
-               }),
-           ]),
-           is_memory:schema.boolean()
-           })
-           var fields= await ctx.request.validate({schema: newSchema, messages:{
-            "exists": "{{field}} (foreign key) is not existed"
-        } })
-        var newImage = new Image()
-        newImage.eventId= fields.event_id
-        newImage.isMemory= fields.is_memory
-        newImage.path= "images/"+image.fileName 
-        await newImage.save()
-        return newImage
+        // const newSchema= schema.create({
+        //     event_id: schema.number([
+        //        rules.exists({
+        //            table: 'events',
+        //            column:'id'
+        //        }),
+        //    ]),
+        //    is_memory:schema.boolean()
+        //    })
+        //    var fields= await ctx.request.validate({schema: newSchema, messages:{
+        //     "exists": "{{field}} (foreign key) is not existed"
+        // } })
+        // var newImage = new Image()
+        // newImage.eventId= fields.event_id
+        // newImage.isMemory= fields.is_memory
+        // newImage.path= "images/"+image.fileName 
+        // await newImage.save()
+        // return newImage
+        return { path:"images/"+ image!.fileName }
       }
       
 }
