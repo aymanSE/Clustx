@@ -88,7 +88,7 @@ export default class UsersController {
     }
 
     public async update(ctx: HttpContextContract){
-        var user = await ctx.auth.authenticate()
+        var userAuth = await ctx.auth.authenticate()
        const newSchema= schema.create({
         first_name: schema.string(),
         last_name: schema.string(),
@@ -97,12 +97,13 @@ export default class UsersController {
         about: schema.string(),
         image: schema.string(),
         verified: schema.boolean(),
-        access_role: schema.enum(["admin", "attendee", "organizer"]),
+        access_role: schema.enum(["admin", "pending", "attendee", "organizer"]),
         SID: schema.number(),
         email: schema.string(),
         password: schema.string(),
        })
        var fields= await ctx.request.validate({schema: newSchema})
+       var user= await User.findOrFail(userAuth.id)
        user.firstName= fields.first_name
        user.lastName= fields.last_name
        user.birthDate= fields.birth_date
