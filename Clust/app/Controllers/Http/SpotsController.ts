@@ -38,7 +38,24 @@ export default class SpotsController {
       .andWhere('checked','=',1);
       return result.length;
     }
-    
+    public async getSysTotalAttendee() {
+
+      var result = await Spot.query()
+      .join('events', 'spots.event_id', '=', 'events.id')
+      .select('*')
+      
+      .andWhere('checked','=',1);
+      return result.length;
+    }
+    public async getCount() {
+
+      var result = await Spot.query()
+      .join('events', 'spots.event_id', '=', 'events.id')
+      .select('*')
+      
+      ;
+      return result.length;
+    }
     public async getPastSpots({}: HttpContextContract) {
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
     

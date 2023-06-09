@@ -37,6 +37,10 @@ Route.group(()=>{
   Route.get('totalattendance/:id', 'SpotsController.getTotalAttendee')
   Route.get('totaleventattendee/:id', 'SpotsController.getEventAttendee')
 
+  Route.get('count', 'SpotsController.getCount')
+  Route.get('totalSyseventattendee', 'SpotsController.getSysTotalAttendee')
+
+
   Route.get('/:id', 'SpotsController.getById')
   Route.post('/', 'SpotsController.create')
   Route.put('/', 'SpotsController.update')
@@ -79,6 +83,17 @@ Route.group(()=>{
   Route.get('/', 'EventsController.get')
   Route.get('/nonpast', 'EventsController.getWithNoPastEvents')
   Route.get('getpast', 'EventsController.getPastEvents')
+ 
+  Route.get('getpastcount', 'EventsController.getPastcountEvents')
+  Route.get('getfuturecount', 'EventsController.getFuturecountEvents')
+  Route.get('getlivecount', 'EventsController.getLivecountEvents')
+  Route.get('count', 'EventsController.getSysCount')
+  Route.get('totalviews', 'EventsController.getSysTotalViews')
+
+  Route.get('getpastorg/:id', 'EventsController.getPastorgEvents')
+  Route.get('getfutureorg/:id', 'EventsController.getFutureorgEvents')
+  Route.get('getliveorg/:id', 'EventsController.getLiveorgEvents')
+  
   Route.get('getfuture', 'EventsController.getFutureEvents')
   Route.get('/hot', 'EventsController.getHot')
  
@@ -94,6 +109,7 @@ Route.group(()=>{
   Route.post('/', 'EventsController.create')
   Route.put('/', 'EventsController.update')
   Route.delete('/:id', 'EventsController.destroy')
+  
   }).prefix('event')
 
   Route.group(()=>{
@@ -109,12 +125,26 @@ Route.group(()=>{
 Route.group(()=>{
 
   Route.get('/', 'UsersController.get')
+   Route.get('org', 'UsersController.getAllOrg')
+   Route.get('req', 'UsersController.getAllRequest')
+   Route.get('count', 'UsersController.count')
+   Route.get('countOrg', 'UsersController.countOrg')
+   Route.get('countPen', 'UsersController.countPen')
+   Route.get('countAtten', 'UsersController.countAtten')
+
   Route.get('/:id', 'UsersController.getById')
+  
+
   Route.post('/', 'UsersController.create')
+
   Route.post('/login', 'UsersController.login')
   Route.post('/logout', 'UsersController.logout')
   Route.post('/upload', 'UsersController.uploadImage')
   Route.post('/email', 'UsersController.sendEmail')
   Route.put('/', 'UsersController.update')
+  
+  Route.put('verify/:id', 'UsersController.verify')
+
+
   Route.delete('/', 'UsersController.destroy')
 }).prefix('user')

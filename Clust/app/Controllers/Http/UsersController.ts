@@ -14,7 +14,20 @@ export default class UsersController {
         var result = await User.all()
         return result
     }
-
+    public async getAllOrg() {
+        const users = await User.query()
+          .select('id','first_name', 'last_name', 'email', 'verified')
+          .where('access_role','=', 'organizer')
+        return users
+      }
+      public async getAllRequest() {
+        const users = await User.query()
+          .select('id','first_name', 'last_name', 'email', 'verified')
+          .where('access_role','=', 'pending')
+        
+      
+        return users
+      }
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
         var result = User.findOrFail(id)
@@ -105,6 +118,49 @@ export default class UsersController {
     }
 
   
+    public async verify(ctx: HttpContextContract){
+        var id= ctx.params.id
+
+        
+        var user = await User.findOrFail(id)
+
+       user.accessRole='organizer'
+       
+       var result= await user.save()
+       return result
+    }
+    public async count() {
+        const users = await User.query()
+          .select('*')
+          
+        
+      
+        return users.length
+      }
+      public async countOrg() {
+        const users = await User.query()
+          .select('*')
+          .where('access_role','=', 'organizer')
+        
+      
+        return users.length
+      }
+      public async countPen() {
+        const users = await User.query()
+          .select('*')
+          .where('access_role','=', 'pending')
+        
+      
+        return users.length
+      }
+      public async countAtten() {
+        const users = await User.query()
+          .select('*')
+          .where('access_role','=', 'attendee')
+        
+      
+        return users.length
+      }
     public async destroy(ctx: HttpContextContract){
         var userAuth = await ctx.auth.authenticate()
         try{

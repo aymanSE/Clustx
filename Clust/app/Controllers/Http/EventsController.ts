@@ -65,6 +65,36 @@ export default class EventsController {
         var result = Event.query().where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime).preload("images").preload('organizer').preload("spot")
         return result
       }
+      public async getLiveorgEvents (ctx: HttpContextContract) {
+        const moment = require('moment')
+        var id= ctx.params.id
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+         
+        
+        var result =await Event.query().select('*').where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime).where('organizer_id','=',id)
+        return result.length;
+      }
+      public async getPastorgEvents (ctx: HttpContextContract) {
+        const moment = require('moment')
+        var id= ctx.params.id
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+         
+        
+        var result =await Event.query().select('*').where('end_date', '<', currentDateTime).where('organizer_id','=',id)
+        return result.length;
+      }
+      public async getFutureorgEvents (ctx: HttpContextContract) {
+        const moment = require('moment')
+        var id= ctx.params.id
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+         
+        
+        var result =await Event.query().select('*').where('start_date', '>', currentDateTime).where('organizer_id','=',id)
+        return result.length;
+      }
       public async getCount(ctx: HttpContextContract) {
         var id= ctx.params.id
 
@@ -73,7 +103,49 @@ export default class EventsController {
       }
 
 
+      //==========================sys calls================================
+      public async getLivecountEvents () {
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+         
+        
+        var result =await Event.query().select('*').where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime)
+        return result.length;
+      }
+      public async getPastcountEvents () {
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+         
+        
+        var result =await Event.query().select('*').where('end_date', '<', currentDateTime)
+        return result.length;
+      }
+      public async getFuturecountEvents () {
+        const moment = require('moment')
+
+        const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+         
+        
+        var result =await Event.query().select('*').where('start_date', '>', currentDateTime)
+        return result.length;
+      }
+      public async getSysCount() {
+
+        var result = await Event.query().select('*')
+        return result.length;
+      }
+      public async getSysTotalViews( ) {
+    
+        var result = await Event.query()
+        .select('views')
+       .sum('views as totalviwes').groupBy('events.id');
+        return result;
+      }
       
+
+      //===================================================
       public async getPastEvents () {
         const moment = require('moment')
 
