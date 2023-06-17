@@ -21,6 +21,20 @@ export default class EventsController {
         return result
     }  
 
+    public async getAllAdmnin() {
+      const users = await Event.query().preload('organizer', (builder) => {
+        builder.select('email')
+      }).preload('report');
+      return users
+    }
+    public async getAllOrg(ctx: HttpContextContract) {
+      const user = await ctx.params
+
+      const users = await Event.query().preload("images").preload('organizer', (builder) => {
+        builder.select('email')
+      }).where("organizer_id", user.id).preload('report').preload('spot');
+      return users
+    }
     public async getWithNoPastEvents(){
         const moment = require('moment')
 

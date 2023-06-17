@@ -81,6 +81,9 @@ Route.group(()=>{
     
 Route.group(()=>{
   Route.get('/', 'EventsController.get')
+  Route.get('admin', 'EventsController.getAllAdmnin')
+  Route.get('org/:id', 'EventsController.getAllOrg')
+
   Route.get('/nonpast', 'EventsController.getWithNoPastEvents')
   Route.get('getpast', 'EventsController.getPastEvents')
  
@@ -138,13 +141,14 @@ Route.group(()=>{
   Route.post('/', 'UsersController.create')
 
   Route.post('/login', 'UsersController.login')
-  Route.post('/logout', 'UsersController.logout')
+  Route.post('logout/:id', 'UsersController.logout')
   Route.post('/upload', 'UsersController.uploadImage')
   Route.post('/email', 'UsersController.sendEmail')
   Route.put('/', 'UsersController.update')
   
   Route.put('verify/:id', 'UsersController.verify')
+  Route.put('disapprove/:id', 'UsersController.disapprove')
 
-
-  Route.delete('/', 'UsersController.destroy')
+//! changed for admin
+  Route.delete('/:id', 'UsersController.destroy')
 }).prefix('user')

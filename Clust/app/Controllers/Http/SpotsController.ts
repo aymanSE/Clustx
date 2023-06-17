@@ -12,7 +12,7 @@ export default class SpotsController {
       const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
     
       const pastEvents = await Event.query()
-        .where('end_date', '>=', currentDateTime)
+        .where('end_date', '<=', currentDateTime)
         .select('id')
   
        const pastEventIds = pastEvents.map((event) => event.id)

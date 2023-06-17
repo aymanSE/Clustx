@@ -16,13 +16,13 @@ export default class UsersController {
     }
     public async getAllOrg() {
         const users = await User.query()
-          .select('id','first_name', 'last_name', 'email', 'verified')
+          .select('id','first_name', 'last_name', 'email', 'SID')
           .where('access_role','=', 'organizer')
         return users
       }
       public async getAllRequest() {
         const users = await User.query()
-          .select('id','first_name', 'last_name', 'email', 'verified')
+          .select('id','first_name', 'last_name', 'email', 'SID')
           .where('access_role','=', 'pending')
         
       
@@ -48,6 +48,20 @@ export default class UsersController {
         return result
 
     }
+    public async loginAdmin(ctx: HttpContextContract){
+      const newSchema= schema.create({
+          email: schema.string({}, [
+              rules.email(),
+          ]),
+          password: schema.string()
+      })
+      const fields = await ctx.request.validate({schema: newSchema})
+      var email= fields.email
+      var password=  fields.password
+      var result = await ctx.auth.attempt(email, password)
+      return result
+
+  }
 
     public async otp(){
         const otpGenerator = require('otp-generator');
@@ -56,8 +70,10 @@ export default class UsersController {
     }
 
     public async logout(ctx: HttpContextContract){
-        var obj = await ctx.auth.authenticate()
-        await ctx.auth.logout()
+        // var obj = await ctx.auth.authenticate()
+        // await ctx.auth.logout()
+        await ctx.auth.logout(ctx.params.id)
+
         return { message: "Logout" }
     }
 
@@ -130,6 +146,18 @@ export default class UsersController {
        var result= await user.save()
        return result
     }
+
+       public async disapprove(ctx: HttpContextContract){
+        var id= ctx.params.id
+
+        
+        var user = await User.findOrFail(id)
+
+       user.accessRole='attendee'
+       
+       var result= await user.save()
+       return result
+    }
     public async count() {
         const users = await User.query()
           .select('*')
@@ -163,9 +191,11 @@ export default class UsersController {
         return users.length
       }
     public async destroy(ctx: HttpContextContract){
-        var userAuth = await ctx.auth.authenticate()
+        
+      //!return auth
+    //  var userAuth = await ctx.auth.authenticate()
         try{
-            var id = userAuth.id;
+            var id =ctx.params.id //userAuth.id;
             var  user = await  User.findOrFail(id);
             try{
             await  user.delete();
