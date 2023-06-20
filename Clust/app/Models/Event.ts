@@ -1,4 +1,4 @@
-import { BaseModel, belongsTo, BelongsTo, column, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, BelongsTo, column, HasMany, hasMany, HasOne, hasOne, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 import Category from './Category'
 import Image from './Image'
@@ -12,7 +12,7 @@ import { Address } from 'proxy-addr'
 
 export default class Event extends BaseModel {
   public static table= "events"
-  @column({ isPrimary: true })
+  @column({ isPrimary: true ,serializeAs:"id"})
   public id: number
 
   @column({serializeAs:"name"})
@@ -68,7 +68,8 @@ export default class Event extends BaseModel {
   
   @hasMany (()=>Report)
   public report: HasMany<typeof Report>
-  
+  @hasOne (()=>Interaction)
+  public interaction : HasOne<typeof Interaction>
   @hasMany (()=>Spot)
   public spot: HasMany<typeof Spot>
     totalViews: number

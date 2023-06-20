@@ -1,4 +1,5 @@
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, HasMany, belongsTo, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import Event from './Event'
 import Answer from './Answer'
 
 export default class Interaction extends BaseModel {
@@ -9,9 +10,10 @@ export default class Interaction extends BaseModel {
   @column({serializeAs:"type"})
   public type: string
   
-  @column({serializeAs:"answer_id"})
-  public answerId: number
-  
-  @belongsTo (()=>Answer)
-  public answer: BelongsTo<typeof Answer>
+  @column({serializeAs:"eventId"})
+  public eventId: number
+  @hasMany (()=>Answer)
+  public answer: HasMany<typeof Answer>
+  @belongsTo (()=>Event)
+  public event: BelongsTo<typeof Event>
 }
