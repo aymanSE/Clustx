@@ -298,8 +298,8 @@ export default class EventsController {
             event.capacity=  fields.capacity
             // event.thanking_message= fields.thanking_message
             event.address= fields.address
-
-            var result= await event.save()
+            await event.save()
+            var result= Event.query().where("id", event.id).preload("images").preload('organizer').preload("spot").preload("country")
             return result
 
     }
