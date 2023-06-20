@@ -84,11 +84,9 @@ export default class ImagesController {
             }
     }
     public async uploadImage(ctx: HttpContextContract){
-        var image= ctx.request.file("image", {
-          extnames:["png", "jpg", "jpeg"]
-        })        
+        var image= ctx.request.file("image")        
         if(!image) return{ message: "Invalid file" }
-        await image.move(Application.publicPath("images"))
+        await image!.move(Application.publicPath("images"))
         // const newSchema= schema.create({
         //     event_id: schema.number([
         //        rules.exists({

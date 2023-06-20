@@ -5,7 +5,7 @@ import Country from 'App/Models/Country'
 export default class CountriesController {
 
    public async get(){
-       var result = Country.all()
+       var result = Country.query()
        return result
    }
 
