@@ -32,7 +32,7 @@ export default class EventsController {
 
       const users = await Event.query().preload("images").preload('organizer', (builder) => {
         builder.select('email')
-      }).where("organizer_id", user.id).preload('report').preload('spot');
+      }).where("organizer_id", user.id).preload('report').preload('spot').preload("country");
       return users
     }
     public async getAllOrgids(ctx: HttpContextContract) {
@@ -226,7 +226,7 @@ export default class EventsController {
 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result = Event.query().where("id", id).preload("images").preload('organizer').preload("spot") 
+        var result = Event.query().where("id", id).preload("images").preload('organizer').preload("spot") .preload("country")
         return result
     }
 //TODO
