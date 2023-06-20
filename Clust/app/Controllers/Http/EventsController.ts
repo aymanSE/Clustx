@@ -11,16 +11,20 @@ export default class EventsController {
 
     public async get(){
         
-        var result = await Event.query().preload("images").preload('organizer').preload("spot")
-        return result
-    }  
+        var result = await Event.query().preload("images").preload('organizer').preload("spot").preload("country").preload("interaction")
+        return result;
+     }  
     //!!!!!!!
     public async getByAuth(ctx: HttpContextContract){
         const user = await ctx.auth.authenticate()
-        var result = await Event.query().where("id", user.id).preload("images").preload('organizer').preload("spot")
+        var result = await Event.query().where("id", user.id).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction");
         return result
     }  
-
+    public async getLateId(){
+        
+      var result = await Event.query().select('id').orderBy('id', 'desc').first()
+      return result
+  }  
     public async getAllAdmnin() {
       const users = await Event.query().preload('organizer', (builder) => {
         builder.select('email')
@@ -32,7 +36,7 @@ export default class EventsController {
 
       const users = await Event.query().preload("images").preload('organizer', (builder) => {
         builder.select('email')
-      }).where("organizer_id", user.id).preload('report').preload('spot').preload("country");
+      }).where("organizer_id", user.id).preload('report').preload('spot').preload("country").preload("interaction");
       return users
     }
     public async getAllOrgids(ctx: HttpContextContract) {
@@ -47,12 +51,12 @@ export default class EventsController {
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
         console.log(currentDateTime)
         
-        var result = await Event.query().where('end_date', '>=', currentDateTime).preload("images").preload('organizer').preload("spot")
+        var result = await Event.query().where('end_date', '>=', currentDateTime).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction");
         return result
     }  
 
     public async getHot(){
-        var result = await Event.query().orderBy("views", "desc").limit(2).preload("images").preload('organizer').preload("spot")
+        var result = await Event.query().orderBy("views", "desc").limit(2).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction");
         return result
     }  
  
@@ -88,7 +92,7 @@ export default class EventsController {
         // return liveEvents
        
         
-        var result = Event.query().where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime).preload("images").preload('organizer').preload("spot")
+        var result = Event.query().where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction");
         return result
       }
       public async getLiveorgEvents (ctx: HttpContextContract) {
@@ -98,7 +102,7 @@ export default class EventsController {
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
          
         
-        var result =await Event.query().select('*').where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime).where('organizer_id','=',id)
+        var result =await Event.query().select('*').where('start_date','<=', currentDateTime).where('end_date', '>', currentDateTime).where('organizer_id','=',id).preload("country").preload("interaction");
         return result.length;
       }
       public async getPastorgEvents (ctx: HttpContextContract) {
@@ -108,7 +112,7 @@ export default class EventsController {
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
          
         
-        var result =await Event.query().select('*').where('end_date', '<', currentDateTime).where('organizer_id','=',id)
+        var result =await Event.query().select('*').where('end_date', '<', currentDateTime).where('organizer_id','=',id).preload("country").preload("interaction");
         return result.length;
       }
       public async getFutureorgEvents (ctx: HttpContextContract) {
@@ -118,7 +122,7 @@ export default class EventsController {
         const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
          
         
-        var result =await Event.query().select('*').where('start_date', '>', currentDateTime).where('organizer_id','=',id)
+        var result =await Event.query().select('*').where('start_date', '>', currentDateTime).where('organizer_id','=',id).preload("country").preload("interaction");
         return result.length;
       }
       public async getCount(ctx: HttpContextContract) {
@@ -179,7 +183,7 @@ export default class EventsController {
         console.log(currentDateTime)
     
         
-        var result = Event.query().where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot")
+        var result = Event.query().where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction")
         return result
       }
       
@@ -220,13 +224,13 @@ export default class EventsController {
         // return liveEvents
         
         
-        var result = Event.query().where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot")
+        var result = Event.query().where('end_date', '<', currentDateTime).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction")
        
       }
 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result = Event.query().where("id", id).preload("images").preload('organizer').preload("spot") .preload("country")
+        var result = Event.query().where("id", id).preload("images").preload('organizer').preload("spot") .preload("country").preload("interaction")
         return result
     }
 //TODO
@@ -271,6 +275,14 @@ export default class EventsController {
             //     }),
 
             // ]),
+            country_id: schema.number([
+              rules.exists({
+                  table: 'countries',
+                  column:'id'
+              }),
+
+          // ]),
+          ]),
             organizer_id: schema.number([
                 rules.exists({
                     table: 'users',
@@ -284,8 +296,8 @@ export default class EventsController {
             status:schema.enum(["available","unavailable"]),
             views:schema.number(),
             capacity: schema.number(),
-            thanking_message:schema.string(),
-            // address:schema.string()
+             // address:schema.string()
+            address:schema.string()
         })
         var fields= await ctx.request.validate({schema: newSchema, messages:{
             "exists": "{{field}} (foreign key) is not existed"
@@ -297,6 +309,7 @@ export default class EventsController {
             event.description= fields.description
             event.categoryId=  fields.category_id
             // event.countryId=  fields.country_id
+            event.countryId=  fields.country_id
 
             event.organizerId= fields.organizer_id
             event.start_date= fields.start_date.toString()
@@ -304,10 +317,12 @@ export default class EventsController {
             event.status=    fields.status
             event.views=   fields.views
             event.capacity=  fields.capacity
-            event.thanking_message= fields.thanking_message
+           // event.thanking_message= fields.thanking_message
             // event.address= fields.address
+            event.address= fields.address
 
             var result= await event.save()
+              
             return result
 
     }
@@ -363,7 +378,7 @@ export default class EventsController {
             event.status=    fields.status
             event.views=   fields.views
             event.capacity=  fields.capacity
-            event.thanking_message= fields.thanking_message
+        //    event.thanking_message= fields.thanking_message
             // event.address= fields.address
 
             var result= await event.save()
@@ -386,11 +401,11 @@ export default class EventsController {
             }
     }
     public async uploadImage(ctx: HttpContextContract){
-        var image= ctx.request.file("image", {
-          extnames:["png", "jpg", "jpeg"]
-        })
+      
+        var image= ctx.request.file("image")        
+
         if(!image) return{ message: "Invalid file" }
-        await image.move(Application.tmpPath("images"))
-        return{ message: "The image has been uploaded!" }
+        await image!.move(Application.publicPath("images"))
+        return { path:"images/"+ image!.fileName }
       }
 }

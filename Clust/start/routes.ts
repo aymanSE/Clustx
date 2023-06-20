@@ -46,6 +46,8 @@ Route.group(()=>{
    Route.get('getpastcount', 'EventsController.getPastcountEvents')
    Route.get('getfuturecount', 'EventsController.getFuturecountEvents')
    Route.get('getlivecount', 'EventsController.getLivecountEvents')
+   Route.get('getlateid', 'EventsController.getLateId')
+
    Route.get('count', 'EventsController.getSysCount')
    Route.get('totalviews', 'EventsController.getSysTotalViews')
    Route.get('getpastorg/:id', 'EventsController.getPastorgEvents')

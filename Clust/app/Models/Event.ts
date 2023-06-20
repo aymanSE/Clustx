@@ -12,7 +12,7 @@ import { Address } from 'proxy-addr'
 
 export default class Event extends BaseModel {
   public static table= "events"
-  @column({ isPrimary: true })
+  @column({ isPrimary: true ,serializeAs:"id"})
   public id: number
 
   @column({serializeAs:"name"})
