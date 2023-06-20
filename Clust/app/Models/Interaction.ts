@@ -1,5 +1,5 @@
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import Answer from './Answer'
+import Event from './Event'
 
 export default class Interaction extends BaseModel {
   public static table= "interactions"
@@ -9,9 +9,9 @@ export default class Interaction extends BaseModel {
   @column({serializeAs:"type"})
   public type: string
   
-  @column({serializeAs:"answer_id"})
-  public answerId: number
+  @column({serializeAs:"eventId"})
+  public eventId: number
   
-  @belongsTo (()=>Answer)
-  public answer: BelongsTo<typeof Answer>
+  @belongsTo (()=>Event)
+  public answer: BelongsTo<typeof Event>
 }

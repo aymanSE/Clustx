@@ -31,7 +31,7 @@ export default class InteractionsController {
     } })
        var interaction= new Interaction()
        interaction.type= fields.type
-       interaction.answerId= fields.answer_id
+       interaction.eventId= fields.answer_id
        var result= await interaction.save()
        return result
     }
@@ -52,7 +52,7 @@ export default class InteractionsController {
     } })
        var interaction=  await Interaction.findOrFail(fields.id)
        interaction.type= fields.type
-       interaction.answerId= fields.answer_id
+       interaction.eventId= fields.answer_id
        var result= await interaction.save()
        return result
     }

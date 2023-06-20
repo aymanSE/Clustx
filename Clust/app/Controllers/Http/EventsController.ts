@@ -24,7 +24,7 @@ export default class EventsController {
     public async getAllAdmnin() {
       const users = await Event.query().preload('organizer', (builder) => {
         builder.select('email')
-      }).preload('report');
+      }).preload('report')
       return users
     }
     public async getAllOrg(ctx: HttpContextContract) {
@@ -33,6 +33,12 @@ export default class EventsController {
       const users = await Event.query().preload("images").preload('organizer', (builder) => {
         builder.select('email')
       }).where("organizer_id", user.id).preload('report').preload('spot');
+      return users
+    }
+    public async getAllOrgids(ctx: HttpContextContract) {
+      const user = await ctx.params
+
+      const users = await Event.query().select('id').where("organizer_id", user.id);
       return users
     }
     public async getWithNoPastEvents(){
@@ -220,7 +226,7 @@ export default class EventsController {
 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result = Event.query().where("id", id).preload("images").preload('organizer').preload("spot")
+        var result = Event.query().where("id", id).preload("images").preload('organizer').preload("spot") 
         return result
     }
 //TODO

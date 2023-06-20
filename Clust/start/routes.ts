@@ -83,6 +83,7 @@ Route.group(()=>{
   Route.get('/', 'EventsController.get')
   Route.get('admin', 'EventsController.getAllAdmnin')
   Route.get('org/:id', 'EventsController.getAllOrg')
+  Route.get('orgids/:id', 'EventsController.getAllOrgids')
 
   Route.get('/nonpast', 'EventsController.getWithNoPastEvents')
   Route.get('getpast', 'EventsController.getPastEvents')
