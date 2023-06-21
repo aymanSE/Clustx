@@ -1,11 +1,9 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Event from 'App/Models/Event'
-import moment from 'moment';
 
 import {schema,rules} from '@ioc:Adonis/Core/Validator'
 import Image from 'App/Models/Image'
 import Application from '@ioc:Adonis/Core/Application'
-import { DateTime } from 'luxon'
 
 export default class EventsController {
 
@@ -320,9 +318,8 @@ export default class EventsController {
            // event.thanking_message= fields.thanking_message
             // event.address= fields.address
             event.address= fields.address
-
-            var result= await event.save()
-              
+            await event.save()
+            var result= Event.query().where("id", event.id).preload("images").preload('organizer').preload("spot").preload("country")
             return result
 
     }
