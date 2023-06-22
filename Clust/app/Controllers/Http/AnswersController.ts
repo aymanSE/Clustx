@@ -22,10 +22,12 @@ export default class AnswersController {
     public async create(ctx: HttpContextContract){
        const newSchema= schema.create({
         text_description: schema.string(),
+        interactionId: schema.number(),
        })
        var fields= await ctx.request.validate({schema: newSchema})
        var answer= new Answer()
        answer.textDescription= fields.text_description
+       answer.interactionId=fields.interactionId
        var result= await answer.save()
        return result
     }
