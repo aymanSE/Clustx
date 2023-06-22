@@ -94,6 +94,12 @@ Route.group(()=>{
 }).prefix('report')
 
 Route.group(()=>{
+  Route.get('/', 'ratesController.get')
+  Route.get("/rating/", "ratesController.getRating")
+  Route.get("/totals/", "ratesController.getTotalRates")
+}).prefix('rate')
+
+Route.group(()=>{
   Route.get('/', 'SpotsController.get')
   Route.get('getpast', 'SpotsController.getPastSpots')
   Route.get('getpast/auth', 'SpotsController.getPastSpotsByAuth')

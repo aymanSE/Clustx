@@ -8,7 +8,7 @@ import Spot from './Spot'
 import Tag from './Tag'
 import User from './User'
 import Country from './Country'
-import { Address } from 'proxy-addr'
+import Rate from './Rate'
 
 export default class Event extends BaseModel {
   public static table= "events"
@@ -73,4 +73,7 @@ export default class Event extends BaseModel {
   @hasMany (()=>Spot)
   public spot: HasMany<typeof Spot>
     totalViews: number
+    
+  @hasMany (()=>Rate)
+  public rate: HasMany<typeof Rate>
 }

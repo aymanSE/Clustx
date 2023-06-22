@@ -2,6 +2,7 @@ import { BaseModel, beforeSave, column, HasMany, hasMany } from '@ioc:Adonis/Luc
 import BlockList from './BlockList'
 import Spot from './Spot'
 import Event from './Event'
+import Rate from './Rate'
 import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class User extends BaseModel {
@@ -51,6 +52,9 @@ export default class User extends BaseModel {
 
   @hasMany (()=>Spot)
   public spot: HasMany<typeof Spot>
+
+  @hasMany (()=>Rate)
+  public rate: HasMany<typeof Rate>
 
   @beforeSave()
   public static async hashPassword (user: User) {
