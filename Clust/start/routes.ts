@@ -125,7 +125,7 @@ Route.group(()=>{
   Route.get('/:id', 'UsersController.getById')
   Route.post('/', 'UsersController.create')
   Route.post('/login', 'UsersController.login')
-  Route.post('logout/:id', 'UsersController.logout')
+  Route.post('logout', 'UsersController.logout')
   Route.post('/upload', 'UsersController.uploadImage')
   Route.post('/email', 'UsersController.sendEmail')
   Route.put('/', 'UsersController.update')
