@@ -9,7 +9,7 @@ export default class Answer extends BaseModel {
   @column({serializeAs:"text_description"})
   public textDescription: string
   @column({serializeAs:"interactionId"})
-  public interactionId: string
+  public interactionId: number
 
   @belongsTo (()=>Interaction)
   public interaction: BelongsTo<typeof Interaction>
