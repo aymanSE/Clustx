@@ -7,7 +7,11 @@ export default class AnswersController {
         var result = Answer.all()
         return result
     }
-
+    public async getbyIntraction(ctx: HttpContextContract){
+        var result = Answer.query().select("*").where('interactionId','=',ctx.params.id)
+        return result
+      
+    }
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
         var result = Answer.findOrFail(id)

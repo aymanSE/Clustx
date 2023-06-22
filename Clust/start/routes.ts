@@ -7,6 +7,8 @@ Route.get('/', async () => {
 Route.group(()=>{
   Route.get('/', 'AnswersController.get')
   Route.get('/:id', 'AnswersController.getById')
+  Route.get('intraction/:id', 'AnswersController.getbyIntraction')
+
   Route.post('/', 'AnswersController.create')
   Route.put('/', 'AnswersController.update')
   Route.delete('/:id', 'AnswersController.destroy')
