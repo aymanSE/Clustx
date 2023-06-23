@@ -97,6 +97,7 @@ Route.group(()=>{
   Route.get('/', 'ratesController.get')
   Route.get("/rating/", "ratesController.getRating")
   Route.get("/totals/", "ratesController.getTotalRates")
+  Route.post('/', 'ratesController.create')
 }).prefix('rate')
 
 Route.group(()=>{
