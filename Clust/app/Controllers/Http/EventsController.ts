@@ -54,7 +54,11 @@ export default class EventsController {
     }  
 
     public async getHot(){
-        var result = await Event.query().orderBy("views", "desc").limit(2).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction");
+      const moment = require('moment')
+
+      const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+
+        var result = await Event.query().where('end_date', '>=', currentDateTime).orderBy("views", "desc").limit(2).preload("images").preload('organizer').preload("spot").preload("country").preload("interaction");
         return result
     }  
  
@@ -381,6 +385,22 @@ export default class EventsController {
             var result= await event.save()
             return result
     }
+   public async updateViews(ctx: HttpContextContract) {
+    
+    const id = ctx.params.id;
+
+    try {
+     
+      const event = await Event.findOrFail(id);
+      event.views += 1;
+    
+      await event.save()
+       var result=  Event.query().where("id", event.id).preload("images").preload('organizer').preload("spot").preload("country")
+      return { message: 'Event not found' }
+    } catch (error) {
+      return { message: 'Event not found' };
+    }
+   }
     public async destroy(ctx: HttpContextContract){
         try{
             var id = ctx.params.id;
