@@ -65,6 +65,8 @@ Route.group(()=>{
    Route.get('totaleventviews/:id', 'EventsController.getEventViews')
    Route.post('/', 'EventsController.create')
    Route.put('/', 'EventsController.update')
+   Route.put('increment/:id', 'EventsController.updateViews')
+
    Route.delete('/:id', 'EventsController.destroy')
   }).prefix('event')
      
